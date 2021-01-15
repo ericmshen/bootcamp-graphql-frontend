@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/react-hooks'
+import Author from '../Author'
 import { ADD_AUTHOR, ALL_AUTHORS } from './graphql'
 
 const Home = () => {
@@ -32,15 +33,15 @@ const Home = () => {
         },
       },
     },
-    // update: (client, { clientdata }) => {
-    //   try {
-    //     const temp = client.readQuery({ query: ALL_AUTHORS })
-    //     temp.allAuthors = [...temp.allAuthors, clientdata.addAuthor]
-    //     client.writeQuery({ query: ALL_AUTHORS, temp })
-    //   } catch (err) {
-    //     throw new Error('Unexpected error')
-    //   }
-    // },
+    update: (client, { clientdata }) => {
+      try {
+        const temp = client.readQuery({ query: ALL_AUTHORS })
+        temp.allAuthors = [...temp.allAuthors, clientdata.addAuthor]
+        client.writeQuery({ query: ALL_AUTHORS, temp })
+      } catch (err) {
+        throw new Error('Unexpected error')
+      }
+    },
   })
   if (AddAuthorError) {
     throw new Error('could not add')
@@ -64,13 +65,14 @@ const Home = () => {
 
       {!called || loading ? 'loading...' : data.allAuthors.map(a => (
         <>
-          <p>
+          {/* <p>
             {a.firstName}
             {' '}
             {a.lastName}
           </p>
           <p>{a.numBooksPublished}</p>
-          <p>{a.books ? a.books.map(x => x.title) : 'no books yet'}</p>
+          <p>{a.books ? a.books.map(x => x.title) : 'no books yet'}</p> */}
+          <Author author={a} />
         </>
       ))}
     </>
