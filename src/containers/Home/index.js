@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/react-hooks'
+import { useHistory } from 'react-router-dom'
 import Author from '../Author'
 import { ADD_AUTHOR, ALL_AUTHORS } from './graphql'
 
 const Home = () => {
   // const { data, loading, error } = useQuery(ALL_AUTHORS)
+  const history = useHistory()
+  const token = localStorage.getItem('token')
+  if (!token) {
+    history.push('/')
+  }
   const [author, setAuthor] = useState({
     firstName: 'Place', lastName: 'Holder', age: 1, email: 'placeholder@text.com', numBooksPublished: 0,
   })
